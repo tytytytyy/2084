@@ -1,16 +1,43 @@
-import { useGoogleSheet } from "./hooks/useGoogleSheet";
-import RankingList from "./components/RankingList";
+import { useState } from "react";
+
+import { useCharacters } from "./hooks/useCharacters";
+import { useGoogleNames } from "./hooks/useGoogleNames";
+
+import Sidebar from "./components/Sidebar";
+import Characters from "./views/Characters";
+import CharacterCreate from "./views/CharacterCreate";
+
+const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/1bcxjaasmrBsTm7rYnJAT7wPX6_HO-dM79GY3pF1cps8/export?format=csv";
+
 
 export default function App() {
-  const { data } = useGoogleSheet();
+  const [view, setView] = useState("characters");
 
-  // 🏆 nach Score sortieren (höchster zuerst)
-  const sorted = [...data]
-    .sort((a, b) => b.score - a.score)
-    .map((p, index) => ({
-      ...p,
-      rank: index + 1,
-    }));
+  const { characters } = useCharacters();
 
-  return <RankingList data={sorted} />;
+  return (
+    <div className="flex min-h-screen">
+
+      {/* SIDEBAR ALWAYS */}
+      <Sidebar
+        characters={characters}
+        setView={setView}
+      />
+
+      {/* MAIN AREA */}
+      <div className="flex-1">
+
+        {view === "characters" && (
+          <Characters setView={setView} />
+        )}
+
+        {view === "create" && (
+          <CharacterCreate setView={setView} />
+        )}
+
+      </div>
+
+    </div>
+  );
 }
