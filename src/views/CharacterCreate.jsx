@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCharacters } from "../hooks/useCharacters";
-import { useGoogleNames } from "../hooks/useGoogleNames";
+import { fetchSheetData } from "../services/googleSheet";
 import { getRandomItem } from "../utils/random";
 
 const SHEET_URL =
@@ -8,25 +8,31 @@ const SHEET_URL =
 
 export default function CharacterCreate({ setView }) {
   const { addCharacter } = useCharacters();
-  const names = useGoogleNames(SHEET_URL);
-
   const [input, setInput] = useState("");
 
   const handleCreate = async () => {
-    if (!input || names.length === 0) return;
+    if (!input) return;
 
-    // 🎲 random Google Sheet Name
-    const randomName = getRandomItem(names);
+    // 📊 Direkt Sheet laden
+    const sheetData = await fetchSheetData(SHEET_URL);
 
-    // 💾 Firebase speichern (VERKNÜPFUNG)
-    await addCharacter(input, randomName);
+    if (!sheetData.length) return;
+
+    // 🎲 Random Eintrag aus Sheet
+    const randomCharacter = getRandomItem(sheetData);
+
+    // 💾 Firebase sauber speichern
+    await addCharacter({
+      name: input, // User Name
+      assignedName: String(randomCharacter.name), // Sheet Name als String
+      score: Number(randomCharacter.score) || 0, // Sheet Score als Number
+    });
 
     setView("characters");
   };
 
   return (
     <div className="p-6 max-w-md mx-auto">
-
       <h1 className="text-2xl font-bold text-sky-700 mb-4">
         Erstelle einen Charakter
       </h1>
@@ -44,7 +50,6 @@ export default function CharacterCreate({ setView }) {
       >
         🎲 Charakter erstellen
       </button>
-
     </div>
   );
 }

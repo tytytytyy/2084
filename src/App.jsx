@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useCharacters } from "./hooks/useCharacters";
-import { useGoogleNames } from "./hooks/useGoogleNames";
+import { useGoogleSync } from "./hooks/useGoogleSync";
 
 import Sidebar from "./components/Sidebar";
 import BottomNav from "./components/BottomNav";
@@ -10,8 +10,7 @@ import Characters from "./views/Characters";
 import CharacterCreate from "./views/CharacterCreate";
 import HarmonyBoard from "./views/HarmonyBoard";
 
-const SHEET_URL =
-  "https://docs.google.com/spreadsheets/d/1bcxjaasmrBsTm7rYnJAT7wPX6_HO-dM79GY3pF1cps8/export?format=csv";
+import { SHEET_URL } from "./config";
 
 export default function App() {
   const [view, setView] = useState("characters");
@@ -21,15 +20,13 @@ export default function App() {
 
   const { characters } = useCharacters();
 
-
+  useGoogleSync(SHEET_URL, 180000); // alle 3 Minuten
 
   return (
-
-    
     <div className="flex min-h-screen">
       {/* SIDEBAR */}
 
-      <Sidebar characters={characters} setView={setView} open={sidebarOpen}/>
+      <Sidebar characters={characters} setView={setView} open={sidebarOpen} />
 
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -37,7 +34,6 @@ export default function App() {
       >
         ☰
       </button>
-  
 
       {/* MAIN CONTENT */}
       <div className="flex-1">
@@ -53,14 +49,13 @@ export default function App() {
         <BottomNav view={view} setView={setView} />
       </div>
 
-
-    {/* 🔥 HIER IST DAS OVERLAY */}
-    {sidebarOpen && (
-      <div
-        onClick={() => setSidebarOpen(false)}
-        className="fixed inset-0 bg-black/30 z-30"
-      />
-    )}
+      {/* 🔥 HIER IST DAS OVERLAY */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black/30 z-30"
+        />
+      )}
     </div>
   );
 }

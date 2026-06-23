@@ -9,7 +9,7 @@ export default function Characters({ setView }) {
 
       {/* MAIN AREA */}
       <div className="flex-1 p-6">
-        <h1 className="text-2xl font-bold text-sky-700">
+        <h1 className="text-center text-2xl font-bold text-sky-700">
           Characters
         </h1>
       </div>
