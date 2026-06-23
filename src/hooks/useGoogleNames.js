@@ -10,7 +10,7 @@ export function useGoogleNames(url) {
 
       const rows = text
         .split("\n")
-        .map((r) => r.split(",")[0]) // erste Spalte = Name
+        .map((r) => r.split(",")[1]) // erste Spalte = Name
         .filter(Boolean);
 
       setNames(rows);

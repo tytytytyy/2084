@@ -5,14 +5,21 @@ export async function fetchGoogleNames(sheetUrl) {
     const res = await fetch(sheetUrl);
     const text = await res.text();
 
-    const rows = text.split("\n");
+    const rows = text
+      .split("\n")
+      .slice(2, 34); // 👈 ZEILE 3 bis 34 (Index 2–33)
 
-    return rows
-      .map((row) => row.split(",")[1]) // zweite Spalte = Name
-      .filter(Boolean)
-      .map((name) => name.trim());
+    const names = rows
+      .map(row => row.split(",")[1]) // 👈 Spalte "Name"
+      .map(name => name?.trim())
+      .filter(Boolean);
+
+    console.log("NAMES (3–34):", names);
+
+    return names;
+
   } catch (err) {
-    console.error("Google Sheets error:", err);
+    console.error("Sheet error:", err);
     return [];
   }
 }

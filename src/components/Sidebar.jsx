@@ -4,7 +4,7 @@ export default function Sidebar({ characters, setView }) {
 
       {/* TITLE */}
       <h2 className="text-xl font-bold text-sky-700 mb-4">
-        👤 Characters
+        👤 Charaktere
       </h2>
 
       {/* LIST FROM FIREBASE */}
@@ -22,11 +22,11 @@ export default function Sidebar({ characters, setView }) {
             className="p-3 bg-white border rounded-xl"
           >
             <div className="font-semibold text-sky-800">
-              {c.name}
+              {c.assignedName}
             </div>
 
             <div className="text-xs text-slate-500">
-              🎲 {c.assignedName}
+               {c.name}
             </div>
           </div>
         ))}

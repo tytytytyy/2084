@@ -28,7 +28,7 @@ export default function CharacterCreate({ setView }) {
     <div className="p-6 max-w-md mx-auto">
 
       <h1 className="text-2xl font-bold text-sky-700 mb-4">
-        Create Character
+        Erstelle einen Charakter
       </h1>
 
       <input
