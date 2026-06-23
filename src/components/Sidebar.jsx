@@ -1,46 +1,41 @@
-export default function Sidebar({ characters, setView }) {
+export default function Sidebar({ characters, setView, open }) {
   return (
-    <div className="w-72 h-screen bg-sky-50 border-r p-4 flex flex-col">
-
-      {/* TITLE */}
-      <h2 className="text-xl font-bold text-sky-700 mb-4">
-        👤 Charaktere
-      </h2>
-
-      {/* LIST FROM FIREBASE */}
+<div
+  className={`
+    fixed top-0 bottom-0 left-0 w-72
+    bg-sky-50 border-r p-4 flex flex-col
+    transform transition-transform duration-300 z-40
+    ${open ? "translate-x-0" : "-translate-x-full"}
+  `}
+>
+      {/* HEADER */}
+<div className="pt-14 pb-3">
+  <h2 className="text-xl font-bold text-sky-700">
+    Charaktere
+  </h2>
+</div>
+      {/* LIST (scroll only if needed) */}
       <div className="flex-1 overflow-y-auto space-y-2">
-
         {characters.length === 0 && (
-          <p className="text-sm text-slate-400">
-            Keine Charaktere
-          </p>
+          <p className="text-sm text-slate-400">Keine Charaktere</p>
         )}
 
         {characters.map((c) => (
-          <div
-            key={c.id}
-            className="p-3 bg-white border rounded-xl"
-          >
-            <div className="font-semibold text-sky-800">
-              {c.assignedName}
-            </div>
+          <div key={c.id} className="p-3 bg-white border rounded-xl">
+            <div className="font-semibold text-sky-800">{c.assignedName}</div>
 
-            <div className="text-xs text-slate-500">
-               {c.name}
-            </div>
+            <div className="text-xs text-slate-500">{c.name}</div>
           </div>
         ))}
-
       </div>
 
-      {/* BUTTON BOTTOM */}
+      {/* BUTTON */}
       <button
         onClick={() => setView("create")}
         className="mt-4 w-full bg-sky-500 text-white p-3 rounded-xl"
       >
         ➕ Charakter erstellen
       </button>
-
     </div>
   );
 }
