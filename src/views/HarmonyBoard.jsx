@@ -5,7 +5,7 @@ import { SHEET_URL } from "../config";
 export default function HarmonyBoard() {
   const { characters } = useCharacters();
 
-useGoogleSync(SHEET_URL);
+  useGoogleSync(SHEET_URL);
 
   // 🧠 SORTIERUNG: höchste Punkte zuerst
   const sortedCharacters = [...characters].sort(
@@ -15,7 +15,9 @@ useGoogleSync(SHEET_URL);
   return (
     <div className="p-6">
       {/* TITLE */}
-      <h1 className="text-2xl text-center font-bold text-sky-700 mb-6">📊 Harmony Board</h1>
+      <h1 className="text-2xl text-center font-bold text-sky-700 mb-6">
+        📊 Harmony Board
+      </h1>
 
       {/* EMPTY STATE */}
       {sortedCharacters.length === 0 && (
@@ -27,7 +29,16 @@ useGoogleSync(SHEET_URL);
         {sortedCharacters.map((c, index) => (
           <div
             key={c.id}
-            className="p-4 bg-white border rounded-xl flex items-center justify-between shadow-sm"
+            className={`p-4 border rounded-xl flex items-center justify-between shadow-sm
+  ${
+    index === 0
+      ? "bg-yellow-100 border-yellow-400"
+      : index === 1
+        ? "bg-slate-100 border-slate-400"
+        : index === 2
+          ? "bg-orange-100 border-orange-400"
+          : "bg-white"
+  }`}
           >
             {/* 🏆 RANK */}
             <div className="text-xl font-bold text-sky-600 w-10">
@@ -44,9 +55,9 @@ useGoogleSync(SHEET_URL);
             </div>
 
             {/* ⭐ SCORE */}
-            <div className="text-xl font-bold text-green-600">
+{/*             <div className="text-xl font-bold text-green-600">
               {c.score ?? 0}
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
