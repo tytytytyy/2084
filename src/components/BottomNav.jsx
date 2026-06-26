@@ -18,7 +18,7 @@ export default function BottomNav({ view, setView }) {
   return (
     <div className="fixed bottom-0 left-0 right-0 border-t bg-white flex">
       {btn("harmony", "📊 Harmonyboard")}
-      {btn("characters", "👤 Charaktere")}
+      {btn("characters", "👤 Mein Charakter")}
     </div>
   );
 }

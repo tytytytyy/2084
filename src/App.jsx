@@ -52,13 +52,13 @@ export default function App() {
       </button>
 
       {/* MAIN CONTENT */}
-      <div className="flex-1">
-        {view === "start" && <StartScreen setView={setView} />}
+<div className="flex-1 pb-10 overflow-y-auto">
+          {view === "start" && <StartScreen setView={setView} />}
 
         {view === "characters" && (
           <Characters selectedCharacter={selectedCharacter} />
         )}
-        {view === "create" && <CharacterCreate setView={setView} />}
+        {view === "create" && <CharacterCreate setView={setView} setSelectedCharacter={setSelectedCharacter} />}
 
         {view === "harmony" && <HarmonyBoard setView={setView} />}
       </div>

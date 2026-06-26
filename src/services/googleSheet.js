@@ -10,8 +10,10 @@ export async function fetchSheetData(sheetUrl) {
 
     console.log("RAW ROWS:", rows);
 
+
     const parsed = rows
       .map((r) => ({
+        number: String(r[0] || "").trim(), // Nr.-Spalte
         name: String(r[1] || "").trim(), // Name-Spalte
         score: Number(r[2]) || 0, // Score-Spalte
       }))
