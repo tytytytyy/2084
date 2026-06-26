@@ -31,14 +31,16 @@ export function useCharacters() {
   }, []);
 
   // 💾 SAVE
-const addCharacter = async (character) => {
-  await addDoc(collection(db, "characters"), {
-    name: String(character.name),
-    assignedName: String(character.assignedName),
-    score: Number(character.score) || 0,
-    createdAt: Date.now(),
-  });
-};
+  const addCharacter = async (character) => {
+    await addDoc(collection(db, "characters"), {
+      name: String(character.name),
+      assignedName: String(character.assignedName),
+      score: Number(character.score) || 0,
+      characterNumber: Number(character.characterNumber) || 0,
+      imageUrl: String(character.imageUrl || ""),
+      createdAt: Date.now(),
+    });
+  };
 
   return { characters, addCharacter };
 }

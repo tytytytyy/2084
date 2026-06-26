@@ -18,7 +18,7 @@ export function useGoogleSync(sheetUrl, intervalMs = 180000) {
 
         const rows = text
           .split("\n")
-          .slice(2, 34)
+          .slice(2, 36)
           .map((r) => r.split(","));
 
         const sheetData = rows.map((r) => ({
@@ -41,6 +41,7 @@ export function useGoogleSync(sheetUrl, intervalMs = 180000) {
               assignedName: String(match.name),
               name: String(char.name || ""),
               score: Number(match.score) || 0,
+
             });
           }
         });

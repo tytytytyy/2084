@@ -1,0 +1,46 @@
+// src/data/characterImages.js
+
+const rawUrls = [
+  "https://i.imgur.com/zj97H0a.jpeg",
+  "https://i.imgur.com/xZAv1Ab.jpeg",
+  "https://i.imgur.com/xaJgXdt.jpeg",
+  "https://i.imgur.com/HPumZZ1.jpeg",
+  "https://i.imgur.com/gskIKzS.jpeg",
+  "https://i.imgur.com/NukiAl6.jpeg",
+  "https://i.imgur.com/QquTQ0E.jpeg",
+  "https://i.imgur.com/SxCydP1.jpeg",
+  "https://i.imgur.com/sc96cXA.jpeg",
+  "https://i.imgur.com/YaKYGZg.jpeg",
+  "https://i.imgur.com/66gKiA5.jpeg",
+  "https://i.imgur.com/fUUBcTL.jpeg",
+  "https://i.imgur.com/XqzQ29u.jpeg",
+  "https://i.imgur.com/M6xsZVI.jpeg",
+  "https://i.imgur.com/RYvP8Ka.jpeg",
+  "https://i.imgur.com/SA4E3OC.jpeg",
+  "https://i.imgur.com/cz6sfdC.jpeg",
+  "https://i.imgur.com/EgwWdB8.jpeg",
+  "https://i.imgur.com/BglU8SC.jpeg",
+  "https://i.imgur.com/wCv37F8.jpeg",
+  "https://i.imgur.com/VWsZJi5.jpeg",
+  "https://i.imgur.com/wZ8MNqX.jpeg",
+  "https://i.imgur.com/hNWhaTL.jpeg",
+  "https://i.imgur.com/puEi4cU.jpeg",
+  "https://i.imgur.com/qxXBDXq.jpeg",
+  "https://i.imgur.com/GnJcZ9N.jpeg",
+  "https://i.imgur.com/D6rvcZG.jpeg",
+  "https://i.imgur.com/JOBLH2r.jpeg",
+  "https://i.imgur.com/y1ryEAn.jpeg",
+  "https://i.imgur.com/x9nlFqX.jpeg",
+  "https://i.imgur.com/iGR6zP5.jpeg",
+  "https://i.imgur.com/91R0FN3.jpeg",
+  "https://i.imgur.com/sBfLq1w.jpeg",
+  "https://i.imgur.com/KRD2mSC.jpeg",
+  "https://i.imgur.com/iHVl9Pw.jpeg",
+  "https://i.imgur.com/EvwimX3.jpeg",
+];
+
+// Automatische Nummerierung (id beginnt bei 1)
+export const characterImages = rawUrls.map((url, index) => ({
+  id: index + 1,
+  url,
+}));

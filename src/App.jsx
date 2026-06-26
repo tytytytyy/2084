@@ -6,6 +6,7 @@ import { useGoogleSync } from "./hooks/useGoogleSync";
 import Sidebar from "./components/Sidebar";
 import BottomNav from "./components/BottomNav";
 
+import StartScreen from "./components/StartScreen";
 import Characters from "./views/Characters";
 import CharacterCreate from "./views/CharacterCreate";
 import HarmonyBoard from "./views/HarmonyBoard";
@@ -13,10 +14,14 @@ import HarmonyBoard from "./views/HarmonyBoard";
 import { SHEET_URL } from "./config";
 
 export default function App() {
-  const [view, setView] = useState("characters");
+  const [view, setView] = useState("start");
 
   //Sidebar State
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const closeSidebar = () => setSidebarOpen(false);
+
+  //Ausgewählter Charakter
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   const { characters } = useCharacters();
 
@@ -26,19 +31,33 @@ export default function App() {
     <div className="flex min-h-screen">
       {/* SIDEBAR */}
 
-      <Sidebar characters={characters} setView={setView} open={sidebarOpen} />
+      {sidebarOpen && <div onClick={() => setSidebarOpen(false)} />}
 
+      <Sidebar
+        characters={characters}
+        setView={setView}
+        open={sidebarOpen}
+        closeSidebar={() => setSidebarOpen(false)}
+        onSelectCharacter={(character) => {
+          setSelectedCharacter(character);
+          setView("characters");
+          setSidebarOpen(false);
+        }}
+      />
       <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="absolute top-4 left-4 z-50 text-2xl"
+        onClick={() => setSidebarOpen((prev) => !prev)}
+        className="fixed top-4 left-4 z-50 text-2xl"
       >
         ☰
       </button>
 
       {/* MAIN CONTENT */}
       <div className="flex-1">
-        {view === "characters" && <Characters setView={setView} />}
+        {view === "start" && <StartScreen setView={setView} />}
 
+        {view === "characters" && (
+          <Characters selectedCharacter={selectedCharacter} />
+        )}
         {view === "create" && <CharacterCreate setView={setView} />}
 
         {view === "harmony" && <HarmonyBoard setView={setView} />}
@@ -48,14 +67,6 @@ export default function App() {
       <div className="flex min-h-screen">
         <BottomNav view={view} setView={setView} />
       </div>
-
-      {/* 🔥 HIER IST DAS OVERLAY */}
-      {sidebarOpen && (
-        <div
-          onClick={() => setSidebarOpen(false)}
-          className="fixed inset-0 bg-black/30 z-30"
-        />
-      )}
     </div>
   );
 }
