@@ -5,11 +5,12 @@ import { useGoogleSync } from "./hooks/useGoogleSync";
 
 import Sidebar from "./components/Sidebar";
 import BottomNav from "./components/BottomNav";
-
 import StartScreen from "./components/StartScreen";
+
 import Characters from "./views/Characters";
 import CharacterCreate from "./views/CharacterCreate";
 import HarmonyBoard from "./views/HarmonyBoard";
+import VoteWindow from "./views/VoteWindow";
 
 import { SHEET_URL } from "./config";
 
@@ -24,6 +25,9 @@ export default function App() {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   const { characters } = useCharacters();
+
+  // Voting Fenster
+  const [activeVoteId, setActiveVoteId] = useState(null);
 
   useGoogleSync(SHEET_URL, 180000); // alle 3 Minuten
 
@@ -52,15 +56,29 @@ export default function App() {
       </button>
 
       {/* MAIN CONTENT */}
-<div className="flex-1 pb-10 overflow-y-auto">
-          {view === "start" && <StartScreen setView={setView} />}
+      <div className="flex-1 pb-10 overflow-y-auto">
+        {view === "start" && <StartScreen setView={setView} />}
 
         {view === "characters" && (
-          <Characters selectedCharacter={selectedCharacter} />
+          <Characters
+            selectedCharacter={selectedCharacter}
+            setView={setView}
+            setActiveVoteId={setActiveVoteId}
+          />
         )}
-        {view === "create" && <CharacterCreate setView={setView} setSelectedCharacter={setSelectedCharacter} />}
+        
+        {view === "create" && (
+          <CharacterCreate
+            setView={setView}
+            setSelectedCharacter={setSelectedCharacter}
+          />
+        )}
 
         {view === "harmony" && <HarmonyBoard setView={setView} />}
+
+        {view === "voteWindow" && (
+          <VoteWindow voteId={activeVoteId} setView={setView} />
+        )}
       </div>
 
       {/* 🔥 ALWAYS VISIBLE */}
