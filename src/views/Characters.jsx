@@ -3,9 +3,7 @@ import { useCharacters } from "../hooks/useCharacters";
 import { getActiveVoteButton } from "../utils/voteButtonTime";
 import { getVoteAllowance } from "../utils/voteAllowance";
 
-export default function Characters({
-  selectedCharacter,
-}) {
+export default function Characters({ selectedCharacter }) {
   const { characters, submitSocialVote } = useCharacters();
 
   const activeVoteButton = getActiveVoteButton();
@@ -14,16 +12,36 @@ export default function Characters({
   const [voteTarget1, setVoteTarget1] = useState("");
   const [voteTarget2, setVoteTarget2] = useState("");
 
-  const voteAllowance = getVoteAllowance(selectedCharacter, characters);
-  const voteTargets = characters.filter((c) => c.id !== selectedCharacter?.id);
+  const FOND_ID = "123";
 
-  const alreadyVoted =
-    selectedCharacter?.votedRounds?.includes(openVotePopup);
+  const playerCharacters = characters.filter((c) => c.id !== FOND_ID);
+
+  const voteAllowance = getVoteAllowance(selectedCharacter, playerCharacters);
+
+  const voteTargets = playerCharacters.filter(
+    (c) => c.id !== selectedCharacter?.id,
+  );
+
+  const [voteToFond, setVoteToFond] = useState(false);
+
+  const alreadyVoted = selectedCharacter?.votedRounds?.includes(openVotePopup);
 
   const handleSubmitVote = async () => {
-    const selectedVotes = [voteTarget1, voteTarget2].filter(Boolean);
+    const selectedVotes = voteToFond
+      ? [FOND_ID]
+      : [voteTarget1, voteTarget2].filter(Boolean);
 
     if (selectedVotes.length === 0) return;
+
+    if (
+      !voteToFond &&
+      voteTarget1 &&
+      voteTarget2 &&
+      voteTarget1 === voteTarget2
+    ) {
+      alert("Du darfst nicht zweimal für dieselbe Person abstimmen.");
+      return;
+    }
 
     try {
       await submitSocialVote({
@@ -34,6 +52,7 @@ export default function Characters({
 
       setVoteTarget1("");
       setVoteTarget2("");
+      setVoteToFond(false);
       setOpenVotePopup(null);
     } catch (err) {
       alert(err.message);
@@ -75,6 +94,7 @@ export default function Characters({
                   onClick={() => {
                     setVoteTarget1("");
                     setVoteTarget2("");
+                    setVoteToFond(false);
                     setOpenVotePopup(vote);
                   }}
                   className={`w-full py-2 px-4 rounded-lg font-medium transition-all duration-200 ${
@@ -83,7 +103,7 @@ export default function Characters({
                       : "bg-slate-200 text-slate-500 cursor-not-allowed"
                   }`}
                 >
-                  Abstimmung Jahr {index + 2}
+                  Abstimmung Jahr {index + 1}
                 </button>
               ))}
 
@@ -103,19 +123,36 @@ export default function Characters({
                     ) : voteAllowance === 0 ? (
                       <div className="bg-slate-100 rounded-2xl p-6">
                         <p className="text-center text-slate-600 font-semibold">
-                          Du bist ein Gamma und hast keine Wahlstimme bei der Abstimmung
+                          Du bist ein Gamma und hast keine Wahlstimme bei der
+                          Abstimmung
                         </p>
                       </div>
                     ) : (
                       <div className="space-y-6">
-                        <p className="text-center text-slate-600 font-semibold">
-                          Du bist ein Beta und hast eine Wahlstimme bei der Abstimmung.
-                        </p>
+                        <label className="flex items-center gap-3 p-4 rounded-2xl bg-amber-50 border border-amber-200 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={voteToFond}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
 
+                              setVoteToFond(checked);
+
+                              if (checked) {
+                                setVoteTarget1("");
+                                setVoteTarget2("");
+                              }
+                            }}
+                          />
+                          <span className="font-semibold text-amber-700">
+                            In Fond einzahlen
+                          </span>
+                        </label>
                         <select
                           value={voteTarget1}
                           onChange={(e) => setVoteTarget1(e.target.value)}
                           className="w-full p-4 border border-sky-200 rounded-2xl bg-sky-50"
+                          disabled={voteToFond}
                         >
                           <option value="">Spieler wählen</option>
                           {voteTargets.map((c) => (
@@ -129,7 +166,8 @@ export default function Characters({
                           <select
                             value={voteTarget2}
                             onChange={(e) => setVoteTarget2(e.target.value)}
-                            className="w-full p-4 border border-sky-200 rounded-2xl bg-sky-50"
+                            className="w-full p-4 border border-sky-200 rounded-2xl bg-sky-50 "
+                            disabled={voteToFond}
                           >
                             <option value="">Zweiten Spieler wählen</option>
                             {voteTargets.map((c) => (
@@ -145,7 +183,7 @@ export default function Characters({
                     {!alreadyVoted && voteAllowance > 0 && (
                       <button
                         onClick={handleSubmitVote}
-                        disabled={!voteTarget1 && !voteTarget2}
+                        disabled={!voteToFond && !voteTarget1 && !voteTarget2}
                         className="mt-6 w-full bg-green-500 text-white p-3 rounded-2xl font-semibold disabled:opacity-40"
                       >
                         Abstimmen
