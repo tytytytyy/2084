@@ -1,2 +1,2 @@
 export const SHEET_URL =
-  "https://docs.google.com/spreadsheets/d/1bcxjaasmrBsTm7rYnJAT7wPX6_HO-dM79GY3pF1cps8/export?format=csv";
+  "https://docs.google.com/spreadsheets/d/1IcmcWpKiF0iZ1zYX1r9Kknb3mKB17lLgUUEGHPuocYU/export?format=csv";

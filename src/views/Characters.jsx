@@ -83,7 +83,7 @@ export default function Characters({
                       : "bg-slate-200 text-slate-500 cursor-not-allowed"
                   }`}
                 >
-                  Abstimmung Tag {index + 2}
+                  Abstimmung Jahr {index + 2}
                 </button>
               ))}
 
